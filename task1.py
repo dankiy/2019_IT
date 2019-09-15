@@ -63,5 +63,21 @@ for i in range(i_end, len(x)-1):
 print(f"ambiguous region: [{x[i_start]}, {x[i_end]}]")
 print(f"ambiguous indices are between {i_end} and {i_start}")
 
-# todo: find x0 between x[i_start], x[i_end]
-# e.g.  brute-force search
+import numpy as np
+
+min = abs(np.trapz(x[i_end:i_start], u[i_end:i_start])) 
+print(min)
+
+i = i_end + 1
+
+while i < i_start:
+  delta = abs(np.trapz(x[i_end:i], u[i_end:i]) 
+  - np.trapz(x[i:i_start], u[i:i_start]))
+  print(delta)
+  if delta < min:
+    min = delta
+  else:
+    break
+  i += 1
+
+print('x0: ', x[i-1])
