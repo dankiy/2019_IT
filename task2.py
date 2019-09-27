@@ -7,15 +7,16 @@ def add_noise(img, rate=5):
     return
 
 
-def get_kernel(windos_size):
-    kernel = np.ones((windos_size, windos_size))
-    kernel/=kernel.sum()
+def get_kernel(windos_size, stdev):
+    gauss = lambda a: e**(-(a[0]*a[0]+a[1]*a[1])/(2*stdev*stdev))/((2*pi*stdev*stdev))
+    kernel = np.array([[gauss((x-int(windos_size/2), y-int(windos_size/2))) for y in range(windos_size)]
+                       for x in range(windos_size)])
     return kernel
 
 
-def filter(img, window_size=3):
+def filter(img, window_size=3, stdev=1):
     img2 = np.zeros_like(img)
-    kernel = get_kernel(window_size)
+    kernel = get_kernel(window_size, stdev)
     p = window_size//2
     for k in range(img.shape[2]): # foreach color channel
         for i in range(p, img.shape[0]-p): # foreach row
